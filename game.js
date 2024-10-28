@@ -12,24 +12,33 @@ export class Game {
         this.#numberUtil = numberUtil
         this.#settings = {
             gridSize: {
-                columnCount: 1,
-                rowsCount: 2
+                columnCount: 3,
+                rowsCount: 6
             },
             jumpInterval: 10
         }
     }
 
-    #jumpGoogle() {
+    async #jumpGoogle() {
 
         const newGooglePosition = {
-            x: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.x),
-            y: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.y),
+            x: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
+            y: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1),
         }
-    }
 
+        if (newGooglePosition.x === this.#googlePosition?.x && newGooglePosition.y === this.#googlePosition?.y) {
+            return this.#jumpGoogle()
+        }
+
+        this.#googlePosition = newGooglePosition
+    }
 
     async getStatus() {
         return this.#state
+    }
+
+    async getSettings() {
+        return this.#settings
     }
 
     async start() {

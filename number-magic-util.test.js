@@ -27,7 +27,7 @@ describe('NumberMagicUtil', () => {
         it('should return the lower boundary when random number is at minimum', () => {
             const from = -10;
             const to = -5;
-            const result = numberMagicUtil.getRandomNumber(from, to);
+            const result = util.getRandomNumber(from, to);
             expect(result).toBeGreaterThanOrEqual(from);
             expect(result).toBeLessThanOrEqual(to);
         });
@@ -35,7 +35,7 @@ describe('NumberMagicUtil', () => {
         it('should handle large ranges correctly', () => {
             const from = 0;
             const to = 1000000;
-            const result = numberMagicUtil.getRandomNumber(from, to);
+            const result = util.getRandomNumber(from, to);
             expect(result).toBeGreaterThanOrEqual(from);
             expect(result).toBeLessThanOrEqual(to);
         });
