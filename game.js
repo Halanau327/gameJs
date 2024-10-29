@@ -1,9 +1,10 @@
+import {Position} from "./position.js";
+
 export class Game {
     #state;
     #googlePosition;
     #numberUtil;
     #settings
-
 
     // dependency injection
     constructor(numberUtil) {
@@ -20,17 +21,20 @@ export class Game {
     }
 
     async #jumpGoogle() {
+        const newPosition = new Position(
+            await this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
+            await this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1)
+        )
 
-        const newGooglePosition = {
-            x: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
-            y: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1),
-        }
-
-        if (newGooglePosition.x === this.#googlePosition?.x && newGooglePosition.y === this.#googlePosition?.y) {
+        if (!!this.#googlePosition && newPosition.isEqual(this.#googlePosition)) {
             return this.#jumpGoogle()
         }
+    }
 
-        this.#googlePosition = newGooglePosition
+    async #runGoogleJumpInterval() {
+        setInterval(async () => {
+            await this.#jumpGoogle()
+        }, this.#settings.jumpInterval)
     }
 
     async getStatus() {
@@ -42,8 +46,9 @@ export class Game {
     }
 
     async start() {
-        setInterval(this.#jumpGoogle.bind(this), 2000)
         this.#state = GAME_STATUSES.IN_PROGRESS
+        await this.#jumpGoogle()
+        await this.#runGoogleJumpInterval()
     }
 
     async getGooglePosition() {
