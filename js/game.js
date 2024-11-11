@@ -34,9 +34,9 @@ export class Game {
 
     async start() {
         this.#state = GAME_STATUSES.IN_PROGRESS
+        await this.#initializePlayers();
         await this.#google.jump()
         await this.#runGoogleJumpInterval()
-        await this.#initializePlayers();
     }
 
     async getGooglePosition() {
@@ -61,8 +61,8 @@ export class Game {
         }
         player.moveTo(newPosition)
 
-        if (player.position.isEqual(this.#googlePosition)) {
-            this.#state === GAME_STATUSES.FINISHED
+        if (player.position.isEqual(this.#google.position)) {
+            this.#state = GAME_STATUSES.FINISHED
             console.log(`Player ${player.id} caught Google`)
         }
     }
