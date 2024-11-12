@@ -89,5 +89,5 @@ export const GAME_SETTINGS = {
         columnCount: 3,
         rowsCount: 6
     },
-    jumpInterval: 15
+    jumpInterval: 100
 };

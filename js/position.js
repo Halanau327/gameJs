@@ -29,4 +29,6 @@ export class Position {
         }
         return this.#x === otherPosition.x && this.#y === otherPosition.y
     }
+
+
 }
