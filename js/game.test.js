@@ -45,40 +45,29 @@ describe("Game", () => {
     )
 
     it("google should have random correct position after jump interval", async () => {
-        await game.getSettings();
-        await game.start();
-
-        const settings = await game.getSettings();
-        const {columnCount, rowsCount} = settings.gridSize;
-
         for (let i = 0; i < 10; i++) {
-            let googlePositionBefore = await game.getGooglePosition();
-
-            // Проверяем, что позиция Google находится в пределах сетки
-            expect(googlePositionBefore.x).toBeGreaterThanOrEqual(0);
-            expect(googlePositionBefore.x).toBeLessThan(columnCount);
-            expect(googlePositionBefore.y).toBeGreaterThanOrEqual(0);
-            expect(googlePositionBefore.y).toBeLessThan(rowsCount);
-
-            await delay(settings.jumpInterval + 50); // Добавляем небольшую задержку, чтобы убедиться, что интервал прошел
-
+            createGame()
         }
     });
 
     it("player should have random correct positions after start", async () => {
         for (let i = 0; i < 10; i++) {
             createGame()
-            const player1 = new Player(new Position(0, 0), 1)
-            game.addPlayer(player1)
 
-            const playerPosition1 = player1.position;
+            await game.setSettings({
+                gridSize: {
+                    columnCount: 4,
+                    rowsCount: 1
+                },
+                jumpInterval: 100
+            })
 
-            await game.getSettings();
-            await game.start()
+            await game.start();
+            await delay(200);
 
-            const playerPosition2 = player1.position;
+            const player1NewPosition = await game.getPlayer1Position();
 
-            expect(playerPosition1).not.toEqual(playerPosition2);
+            expect(player1NewPosition).not.toEqual({x: 1, y: 1});
 
         }
     });

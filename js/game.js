@@ -7,7 +7,8 @@ export class Game {
     #google;
     #numberUtil;
     #settings
-    #players
+    #player1
+    #player2
 
     // dependency injection
     constructor(numberUtil) {
@@ -15,7 +16,21 @@ export class Game {
         this.#numberUtil = numberUtil
         this.#settings = GAME_SETTINGS
         this.#google = new Google(this.#numberUtil, this.#settings)
-        this.#players = []
+        this.#player1 = this.#createPlayer(1)
+        this.#player2 = this.#createPlayer(2)
+
+    }
+
+    #createPlayer(id) {
+        const position = new Position(1, 1);
+        const player = new Player(position, id);
+        player.setNumberUtil(this.#numberUtil);
+        player.setSettings(this.#settings);
+        return player;
+    }
+
+    async getPlayer1Position() {
+        return this.#player1.position
     }
 
     async #runGoogleJumpInterval() {
@@ -32,9 +47,16 @@ export class Game {
         return this.#settings
     }
 
+    async setSettings(settings) {
+        if (settings.gridSize.rowsCount * settings.gridSize.columnCount < 4) {
+            throw new Error('Grid size must be at least 4x4')
+        }
+        this.#settings = settings
+    }
+
     async start() {
         this.#state = GAME_STATUSES.IN_PROGRESS
-        await this.#initializePlayers();
+        await this.#player1.initPlayerPosition()
         await this.#google.jump()
         await this.#runGoogleJumpInterval()
     }
@@ -43,39 +65,6 @@ export class Game {
         return this.#google.position
     }
 
-    addPlayer(player) {
-        if (!(player instanceof Player)) {
-            throw new Error('Player should be an instance of Player class');
-        }
-        this.#players.push(player);
-    }
-
-    getPlayers() {
-        return this.#players
-    }
-
-    async movePlayer(playerId, newPosition) {
-        const player = this.#players.find(p => p.id === playerId)
-        if (!player) {
-            throw new Error('Player not found');
-        }
-        player.moveTo(newPosition)
-
-        if (player.position.isEqual(this.#google.position)) {
-            this.#state = GAME_STATUSES.FINISHED
-            console.log(`Player ${player.id} caught Google`)
-        }
-    }
-
-    async #initializePlayers() {
-        for (const player of this.#players) {
-            const newPosition = new Position(
-                await this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
-                await this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1)
-            );
-            await this.movePlayer(player.id, newPosition);
-        }
-    }
 }
 
 export const GAME_STATUSES = {

@@ -3,6 +3,9 @@ import {Position} from "./position.js";
 export class Player {
     #position
     #id
+    #numberUtil
+    #settings
+
 
     constructor(position, id) {
         if (!(position instanceof Position)) {
@@ -13,20 +16,26 @@ export class Player {
         this.#id = id
     }
 
+    setNumberUtil(numberUtil) {
+        this.#numberUtil = numberUtil;
+    }
+
+    setSettings(settings) {
+        this.#settings = settings;
+    }
+
     get position() {
         return this.#position
     }
 
-    get id() {
-        return this.#id
+    async initPlayerPosition() {
+        this.#position = new Position(
+            await this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
+            await this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1)
+        );
     }
 
-    moveTo(newPosition) {
-        if (!(newPosition instanceof Position)) {
-            throw new Error('New position should be an instance of Position class');
-        }
-        this.#position = newPosition
-    }
+
 
     toJSON() {
         return {
