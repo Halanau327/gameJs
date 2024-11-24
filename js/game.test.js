@@ -1,7 +1,5 @@
 import {Game, GAME_STATUSES} from "./game.js";
 import {NumberMagicUtil} from "./number-magic-util.js";
-import {Position} from "./position.js";
-import {Player} from "./player.js";
 
 describe("Game", () => {
     let game
@@ -25,20 +23,6 @@ describe("Game", () => {
 
         expect(status).toBe(GAME_STATUSES.IN_PROGRESS)
     })
-
-    it("google should return correct Google position after start", async () => {
-            for (let i = 0; i < 10; i++) {
-                createGame()
-                await game.start();
-
-                let googlePosition = await game.getGooglePosition()
-                await delay(250)
-                let googlePosition2 = await game.getGooglePosition()
-
-                expect(googlePosition).not.toEqual(googlePosition2);
-            }
-        }
-    )
 
     it("google should have random correct position after jump interval", async () => {
         for (let i = 0; i < 20; i++) {
@@ -64,13 +48,13 @@ describe("Game", () => {
             const googleNewPosition = await game.getGooglePosition();
 
             // Проверяем, что новая позиция отличается от начальной
-            expect(googleNewPosition).toEqual(googleInitialPosition);
+            expect(googleNewPosition.toJSON()).not.toEqual(googleInitialPosition.toJSON());
         }
     });
 
-    it("player should have random correct positions after start", async () => {
+    it("player should not have google position after start", async () => {
         for (let i = 0; i < 10; i++) {
-            createGame()
+            createGame();
 
             await game.setSettings({
                 gridSize: {
@@ -78,18 +62,21 @@ describe("Game", () => {
                     rowsCount: 1
                 },
                 jumpInterval: 100
-            })
+            });
 
             await game.start();
+
             await delay(150);
 
-            const player1NewPosition = await game.getPlayer1Position();
+            const player1Position = await game.getPlayer1Position();
+            const googlePosition = await game.getGooglePosition();
 
-            expect(player1NewPosition).not.toEqual({x: 1, y: 2});
+            console.log('Player 1 Position:', player1Position.toJSON());
+            console.log('Google Position:', googlePosition.toJSON());
 
+            expect(player1Position.toJSON()).not.toEqual(googlePosition.toJSON());
         }
     });
 })
-
 
 const delay = ms => new Promise(res => setTimeout(res, ms))

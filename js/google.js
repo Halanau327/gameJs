@@ -17,7 +17,7 @@ export class Google {
         this.#settings = settings
         this.#position = new Position(
             this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
-            this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1))
+                this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1))
     }
 
     async jump(playerPosition) {
@@ -35,5 +35,11 @@ export class Google {
         }
 
         this.#position = newPosition;
+        // console.log('Google jumped to:', this.#position.x, this.#position.y);
+    }
+
+    get position() {
+        return this.#position;
     }
 }
+1

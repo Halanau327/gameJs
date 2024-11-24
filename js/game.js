@@ -9,29 +9,19 @@ export class Game {
     #google;
     #player1
 
-
     // dependency injection
     constructor(numberUtil) {
         this.#state = GAME_STATUSES.PENDING;
         this.#numberUtil = numberUtil
         this.#settings = GAME_SETTINGS
-        this.#google = new Google(this.#numberUtil, this.#settings)
-        this.#player1 = new Player(new Position(
-            this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
-            this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1)), 1)
     }
-
-    // #createPlayer(id) {
-    //     const position = new Position(this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
-    //         this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1));
-    //     const player = new Player(position, id);
-    //     player.setNumberUtil(this.#numberUtil);
-    //     player.setSettings(this.#settings);
-    //     return player;
-    // }
 
     async getPlayer1Position() {
         return this.#player1.position
+    }
+
+    async initNewPlayer1Position() {
+        return this.#player1.initPlayerPosition()
     }
 
     async #runGoogleJumpInterval() {
@@ -54,9 +44,10 @@ export class Game {
 
     async start() {
         this.#state = GAME_STATUSES.IN_PROGRESS
-        await this.#player1.initPlayerPosition()
-        const player1Position = await this.getPlayer1Position();
-        await this.#google.jump(player1Position)
+        this.#google = new Google(this.#numberUtil, this.#settings)
+        this.#player1 = new Player(this.#numberUtil, this.#settings, 1)
+
+
         await this.#runGoogleJumpInterval()
     }
 

@@ -6,22 +6,14 @@ export class Player {
     #numberUtil
     #settings
 
-
-    constructor(position, id) {
-        if (!(position instanceof Position)) {
-            throw new Error('Position should be an instance of Position class');
-        }
-
-        this.#position = position
-        this.#id = id
-    }
-
-    setNumberUtil(numberUtil) {
+    constructor(numberUtil, settings, id) {
         this.#numberUtil = numberUtil;
-    }
-
-    setSettings(settings) {
         this.#settings = settings;
+        this.#id = id;
+        this.#position = new Position(
+            this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
+            this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1)
+        );
     }
 
     get position() {
