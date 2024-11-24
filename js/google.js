@@ -42,4 +42,3 @@ export class Google {
         return this.#position;
     }
 }
-1
