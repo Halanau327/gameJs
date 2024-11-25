@@ -16,12 +16,16 @@ export class Game {
         this.#settings = GAME_SETTINGS
     }
 
+    async getGooglePosition() {
+        return this.#google.position
+    }
+
     async getPlayer1Position() {
         return this.#player1.position
     }
 
-    async initNewPlayer1Position() {
-        return this.#player1.initPlayerPosition()
+    async movePlayer1(direction) {
+
     }
 
     async #runGoogleJumpInterval() {
@@ -44,15 +48,9 @@ export class Game {
 
     async start() {
         this.#state = GAME_STATUSES.IN_PROGRESS
-        this.#google = new Google(this.#numberUtil, this.#settings)
         this.#player1 = new Player(this.#numberUtil, this.#settings, 1)
-
-
+        this.#google = new Google(this.#numberUtil, this.#settings)
         await this.#runGoogleJumpInterval()
-    }
-
-    async getGooglePosition() {
-        return this.#google.position
     }
 }
 
@@ -69,3 +67,10 @@ export const GAME_SETTINGS = {
     },
     jumpInterval: 100
 };
+
+export const MOVE_DIRECTIONS = {
+    UP: 'UP',
+    DOWN: 'DOWN',
+    LEFT: 'LEFT',
+    RIGHT: 'RIGHT'
+}

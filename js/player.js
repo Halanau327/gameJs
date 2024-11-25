@@ -20,13 +20,7 @@ export class Player {
         return this.#position
     }
 
-    async initPlayerPosition() {
-        const [x, y] = await Promise.all([
-            this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.columnCount - 1),
-            this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount - 1)
-        ]);
-        this.#position = new Position(x, y);
-    }
+
 
     toJSON() {
         return {

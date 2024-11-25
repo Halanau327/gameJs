@@ -1,5 +1,6 @@
-import {Game, GAME_STATUSES} from "./game.js";
+import {Game, GAME_STATUSES, MOVE_DIRECTIONS} from "./game.js";
 import {NumberMagicUtil} from "./number-magic-util.js";
+import {Position} from "./position.js";
 
 describe("Game", () => {
     let game
@@ -71,12 +72,113 @@ describe("Game", () => {
             const player1Position = await game.getPlayer1Position();
             const googlePosition = await game.getGooglePosition();
 
-            console.log('Player 1 Position:', player1Position.toJSON());
-            console.log('Google Position:', googlePosition.toJSON());
-
             expect(player1Position.toJSON()).not.toEqual(googlePosition.toJSON());
         }
     });
+
+    it("movement of player is correct", async () => {
+        class MockFakeNumberUtility extends NumberMagicUtil {
+            #returnsNumbers = [
+                /*player1*/ 2, 2,
+                /*google*/ 0, 2
+            ]
+
+            #callsCount = 0;
+
+            getRandomNumber() {
+                return this.#returnsNumbers[this.#callsCount++]
+            }
+        }
+
+        const mockNumberUtil = new MockFakeNumberUtility();
+
+        const game = new Game(mockNumberUtil)
+
+        await game.start();
+
+        let position = await game.getPlayer1Position()
+        let googlePosition = await game.getGooglePosition()
+        expect(position).toEqual(new Position(2, 2))
+        expect(googlePosition).toEqual(new Position(0, 2))
+
+        // [  ] [  ] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [p1]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.DOWN)
+
+        expect(position).toBeEqualPosition(new Position(2, 2))
+
+        // [  ] [  ] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [p1]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.RIGHT)
+        position = await game.getPlayer1Position()
+        expect(position).toBeEqualPosition(new Position(2, 2))
+
+        // [  ] [  ] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [p1]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.UP)
+        position = await game.getPlayer1Position()
+        expect(position).toBeEqualPosition(new Position(2, 1))
+
+        // [  ] [  ] [  ]
+        // [  ] [  ] [p1]
+        // [ g] [  ] [  ]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
+        position = await game.getPlayer1Position()
+        expect(position).toBeEqualPosition(new Position(1, 1))
+
+        // [  ] [  ] [  ]
+        // [  ] [p1] [  ]
+        // [ g] [  ] [  ]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.UP)
+        position = await game.getPlayer1Position()
+        expect(position).toBeEqualPosition(new Position(1, 0))
+
+        // [  ] [p1] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [  ]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.UP)
+        position = await game.getPlayer1Position()
+        expect(position).toBeEqualPosition(new Position(1, 0))
+
+        // [  ] [p1] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [  ]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
+        position = await game.getPlayer1Position()
+        expect(position).toBeEqualPosition(new Position(1, 0))
+
+        // [p1] [  ] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [  ]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
+        position = await game.getPlayer1Position()
+        expect(position).toBeEqualPosition(new Position(0, 0))
+
+        // [p1] [  ] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [  ]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.DOWN)
+        position = await game.getPlayer1Position()
+        expect(position).toBeEqualPosition(new Position(0, 1))
+
+        // [  ] [  ] [  ]
+        // [p1] [  ] [  ]
+        // [ g] [  ] [  ]
+
+    });
 })
+
 
 const delay = ms => new Promise(res => setTimeout(res, ms))
