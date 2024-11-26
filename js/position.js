@@ -16,6 +16,14 @@ export class Position {
         return this.#y
     }
 
+    set x(value) {
+        this.#x = value
+    }
+
+    set y(value) {
+       this.#y = value
+    }
+
     toJSON() {
         return {
             x: this.#x,

@@ -94,6 +94,14 @@ describe("Game", () => {
 
         const game = new Game(mockNumberUtil)
 
+        await game.setSettings({
+            gridSize: {
+                columnCount: 3,
+                rowsCount: 3
+            },
+            jumpInterval: 100
+        })
+
         await game.start();
 
         let position = await game.getPlayer1Position()
@@ -107,7 +115,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.DOWN)
 
-        expect(position).toBeEqualPosition(new Position(2, 2))
+        expect(position).toEqual(new Position(2, 2))
 
         // [  ] [  ] [  ]
         // [  ] [  ] [  ]
@@ -115,7 +123,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.RIGHT)
         position = await game.getPlayer1Position()
-        expect(position).toBeEqualPosition(new Position(2, 2))
+        expect(position).toEqual(new Position(2, 2))
 
         // [  ] [  ] [  ]
         // [  ] [  ] [  ]
@@ -123,7 +131,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.UP)
         position = await game.getPlayer1Position()
-        expect(position).toBeEqualPosition(new Position(2, 1))
+        expect(position).toEqual(new Position(2, 1))
 
         // [  ] [  ] [  ]
         // [  ] [  ] [p1]
@@ -131,7 +139,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
         position = await game.getPlayer1Position()
-        expect(position).toBeEqualPosition(new Position(1, 1))
+        expect(position).toEqual(new Position(1, 1))
 
         // [  ] [  ] [  ]
         // [  ] [p1] [  ]
@@ -139,7 +147,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.UP)
         position = await game.getPlayer1Position()
-        expect(position).toBeEqualPosition(new Position(1, 0))
+        expect(position).toEqual(new Position(1, 0))
 
         // [  ] [p1] [  ]
         // [  ] [  ] [  ]
@@ -147,7 +155,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.UP)
         position = await game.getPlayer1Position()
-        expect(position).toBeEqualPosition(new Position(1, 0))
+        expect(position).toEqual(new Position(1, 0))
 
         // [  ] [p1] [  ]
         // [  ] [  ] [  ]
@@ -155,7 +163,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
         position = await game.getPlayer1Position()
-        expect(position).toBeEqualPosition(new Position(1, 0))
+        expect(position).toEqual(new Position(1, 0))
 
         // [p1] [  ] [  ]
         // [  ] [  ] [  ]
@@ -163,7 +171,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
         position = await game.getPlayer1Position()
-        expect(position).toBeEqualPosition(new Position(0, 0))
+        expect(position).toEqual(new Position(0, 0))
 
         // [p1] [  ] [  ]
         // [  ] [  ] [  ]
@@ -171,7 +179,7 @@ describe("Game", () => {
 
         await game.movePlayer1(MOVE_DIRECTIONS.DOWN)
         position = await game.getPlayer1Position()
-        expect(position).toBeEqualPosition(new Position(0, 1))
+        expect(position).toEqual(new Position(0, 1))
 
         // [  ] [  ] [  ]
         // [p1] [  ] [  ]

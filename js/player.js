@@ -20,7 +20,9 @@ export class Player {
         return this.#position
     }
 
-
+    set position(newPosition) {
+        this.#position = newPosition;
+    }
 
     toJSON() {
         return {
