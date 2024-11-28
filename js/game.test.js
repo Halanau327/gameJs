@@ -70,9 +70,11 @@ describe("Game", () => {
             await delay(150);
 
             const player1Position = await game.getPlayer1Position();
+            const player2Position = await game.getPlayer2Position();
             const googlePosition = await game.getGooglePosition();
 
             expect(player1Position.toJSON()).not.toEqual(googlePosition.toJSON());
+            expect(player2Position.toJSON()).not.toEqual(googlePosition.toJSON());
         }
     });
 
@@ -104,87 +106,104 @@ describe("Game", () => {
 
         await game.start();
 
-        let position = await game.getPlayer1Position()
-        let googlePosition = await game.getGooglePosition()
-        expect(position).toEqual(new Position(2, 2))
-        expect(googlePosition).toEqual(new Position(0, 2))
+        let player1Position = await game.getPlayer1Position();
+        let player2Position = await game.getPlayer2Position();
+        let googlePosition = await game.getGooglePosition();
+        expect(player1Position).toEqual(new Position(2, 2));
+        expect(player2Position).toEqual(new Position(1, 1));
+        expect(googlePosition).toEqual(new Position(0, 2));
 
         // [  ] [  ] [  ]
-        // [  ] [  ] [  ]
+        // [  ] [p2] [  ]
         // [ g] [  ] [p1]
 
-        await game.movePlayer1(MOVE_DIRECTIONS.DOWN)
-
-        expect(position).toEqual(new Position(2, 2))
+        await game.movePlayer1(MOVE_DIRECTIONS.DOWN);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(2, 2));
 
         // [  ] [  ] [  ]
-        // [  ] [  ] [  ]
+        // [  ] [p2] [  ]
         // [ g] [  ] [p1]
 
-        await game.movePlayer1(MOVE_DIRECTIONS.RIGHT)
-        position = await game.getPlayer1Position()
-        expect(position).toEqual(new Position(2, 2))
+        await game.movePlayer1(MOVE_DIRECTIONS.RIGHT);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(2, 2));
 
         // [  ] [  ] [  ]
-        // [  ] [  ] [  ]
+        // [  ] [p2] [  ]
         // [ g] [  ] [p1]
 
-        await game.movePlayer1(MOVE_DIRECTIONS.UP)
-        position = await game.getPlayer1Position()
-        expect(position).toEqual(new Position(2, 1))
+        await game.movePlayer1(MOVE_DIRECTIONS.UP);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(2, 1));
 
         // [  ] [  ] [  ]
-        // [  ] [  ] [p1]
+        // [  ] [p2] [p1]
         // [ g] [  ] [  ]
 
-        await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
-        position = await game.getPlayer1Position()
-        expect(position).toEqual(new Position(1, 1))
+        await game.movePlayer2(MOVE_DIRECTIONS.RIGHT);
+        player2Position = await game.getPlayer2Position();
+        expect(player2Position).toEqual(new Position(2, 1));
+
+        // [  ] [  ] [  ]
+        // [  ] [  ] [p2]
+        // [ g] [  ] [p1]
+
+        await game.movePlayer2(MOVE_DIRECTIONS.DOWN);
+        player2Position = await game.getPlayer2Position();
+        expect(player2Position).toEqual(new Position(2, 2));
+
+        // [  ] [  ] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [p2]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.LEFT);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(1, 1));
 
         // [  ] [  ] [  ]
         // [  ] [p1] [  ]
-        // [ g] [  ] [  ]
+        // [ g] [  ] [p2]
 
-        await game.movePlayer1(MOVE_DIRECTIONS.UP)
-        position = await game.getPlayer1Position()
-        expect(position).toEqual(new Position(1, 0))
-
-        // [  ] [p1] [  ]
-        // [  ] [  ] [  ]
-        // [ g] [  ] [  ]
-
-        await game.movePlayer1(MOVE_DIRECTIONS.UP)
-        position = await game.getPlayer1Position()
-        expect(position).toEqual(new Position(1, 0))
+        await game.movePlayer1(MOVE_DIRECTIONS.UP);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(1, 0));
 
         // [  ] [p1] [  ]
         // [  ] [  ] [  ]
-        // [ g] [  ] [  ]
+        // [ g] [  ] [p2]
 
-        await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
-        position = await game.getPlayer1Position()
-        expect(position).toEqual(new Position(1, 0))
+        await game.movePlayer1(MOVE_DIRECTIONS.UP);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(1, 0));
+
+        // [  ] [p1] [  ]
+        // [  ] [  ] [  ]
+        // [ g] [  ] [p2]
+
+        await game.movePlayer1(MOVE_DIRECTIONS.LEFT);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(1, 0));
 
         // [p1] [  ] [  ]
         // [  ] [  ] [  ]
-        // [ g] [  ] [  ]
+        // [ g] [  ] [p2]
 
-        await game.movePlayer1(MOVE_DIRECTIONS.LEFT)
-        position = await game.getPlayer1Position()
-        expect(position).toEqual(new Position(0, 0))
+        await game.movePlayer1(MOVE_DIRECTIONS.LEFT);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(0, 0));
 
         // [p1] [  ] [  ]
         // [  ] [  ] [  ]
-        // [ g] [  ] [  ]
+        // [ g] [  ] [p2]
 
-        await game.movePlayer1(MOVE_DIRECTIONS.DOWN)
-        position = await game.getPlayer1Position()
-        expect(position).toEqual(new Position(0, 1))
+        await game.movePlayer1(MOVE_DIRECTIONS.DOWN);
+        player1Position = await game.getPlayer1Position();
+        expect(player1Position).toEqual(new Position(0, 1));
 
         // [  ] [  ] [  ]
         // [p1] [  ] [  ]
-        // [ g] [  ] [  ]
-
+        // [ g] [  ] [p2]
     });
 })
 
