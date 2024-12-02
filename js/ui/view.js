@@ -1,15 +1,10 @@
 export class View {
     #rootElement
-    // #controller
     #onIncrementHandler
 
     constructor(elementId) {
         this.#rootElement = document.getElementById(elementId)
     }
-
-    // set controller(value) {
-    //     this.#controller = value
-    // }
 
     render(viewModelDTO) {
         this.#rootElement.innerHTML = ''
