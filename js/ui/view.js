@@ -1,33 +1,103 @@
-export class View {
-    #rootElement
-    #onIncrementHandler
+import {GAME_STATUSES} from "../game.js";
 
-    constructor(elementId) {
-        this.#rootElement = document.getElementById(elementId)
+export class GridView {
+    render(settings) {
+        const gridEl = document.createElement('table')
+
+        for (let y = 0; y < settings.gridSize.columns; y++) {
+            const rowEl = document.createElement('tr')
+            for (let x = 0; x < settings.gridSize.rows; x++) {
+                const cellEl = document.createElement('td')
+                cellEl.append(x + ',' + y);
+                rowEl.append(cellEl)
+            }
+            gridEl.append(rowEl)
+        }
+
+        return gridEl
+    }
+}
+
+export class View {
+    #rootEl
+    #gridView
+    #controller
+
+    constructor(rootId) {
+        this.#rootEl = document.getElementById(rootId)
+        // GRASP / Information Expert, Creator
+        this.#gridView = new GridView()
     }
 
-    render(viewModelDTO) {
-        this.#rootElement.innerHTML = ''
+    set controller (controller) {
+       this.#controller = controller
+    }
 
-        this.#rootElement.append(viewModelDTO.value)
+    async render() {
+        const viewModel = await this.#controller.getViewModel()
 
-        const buttonElement = document.createElement('button')
+        this.#rootEl.innerHTML = ''
+        this.#rootEl.append(this.renderStartButton())
+        this.#rootEl.append(this.renderStatus(viewModel.status))
 
-        buttonElement.append('increment')
+        if (viewModel.status === GAME_STATUSES.IN_PROGRESS) {
+            this.#rootEl.append(this.#gridView.render(viewModel.settings))
+        }
+    }
 
+    renderStartButton() {
+        const button = document.createElement('button')
+        button.append('Start')
 
-        buttonElement.addEventListener('click', async () => {
-            await this.#onIncrementHandler()
+        button.addEventListener('click', async () => {
+            await this.#controller.startGame()
         })
 
-
-        this.#rootElement.append(buttonElement)
-
-
+        return button
     }
 
-    set onIncrement(callback) {
-        this.#onIncrementHandler = callback
+    renderStatus(status) {
+        const statusEl = document.createElement('div')
+        statusEl.append('Status: ' + status)
+        return statusEl
     }
 
+    renderGrid(gridSize) {
+
+    }
 }
+
+
+// export class View {
+//     #rootElement
+//     #onIncrementHandler
+//
+//     constructor(elementId) {
+//         this.#rootElement = document.getElementById(elementId)
+//     }
+//
+//     render(viewModelDTO) {
+//         this.#rootElement.innerHTML = ''
+//
+//         this.#rootElement.append(viewModelDTO.value)
+//
+//         const buttonElement = document.createElement('button')
+//
+//         buttonElement.append('increment')
+//
+//
+//         buttonElement.addEventListener('click', async () => {
+//             await this.#onIncrementHandler()
+//         })
+//
+//
+//         this.#rootElement.append(buttonElement)
+//
+//
+//     }
+//
+//     set onIncrement(callback) {
+//         this.#onIncrementHandler = callback
+//     }
+//
+// }

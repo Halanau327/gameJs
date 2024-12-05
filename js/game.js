@@ -121,6 +121,10 @@ export class Game {
         return this.#state
     }
 
+    async getSettings() {
+        return this.#settings
+    }
+
     async setSettings(settings) {
         if (settings.gridSize.rows * settings.gridSize.columns < 4) {
             throw new Error('Grid size must be at least 4x4')
