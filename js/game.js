@@ -21,8 +21,7 @@ export class Game {
     }
 
     async getGooglePosition() {
-        return this.#google.position
-    }
+        return this.#google ? this.#google.position : undefined;    }
 
     async getPlayer1Position() {
         return this.#player1.position

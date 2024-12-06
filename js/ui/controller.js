@@ -14,10 +14,15 @@ export class Controller {
     async getViewModel() {
         const status = await this.#model.getStatus()
         const settings = await this.#model.getSettings()
-        return {
-            status: status,
-            settings: settings
+        const googlePosition = await this.#model.getGooglePosition()
+
+        let viewModel = {
+            status,
+            settings,
+            googlePosition: {...googlePosition}
         }
+
+        return viewModel
     }
 
     async init() {

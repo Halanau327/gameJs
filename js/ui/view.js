@@ -1,14 +1,21 @@
 import {GAME_STATUSES} from "../game.js";
 
 export class GridView {
-    render(settings) {
+    render(viewModel) {
+        const gridSize = viewModel.settings.gridSize
+        const googlePosition = viewModel.googlePosition
+
         const gridEl = document.createElement('table')
 
-        for (let y = 0; y < settings.gridSize.columns; y++) {
+        for (let y = 0; y < gridSize.columns; y++) {
             const rowEl = document.createElement('tr')
-            for (let x = 0; x < settings.gridSize.rows; x++) {
+            for (let x = 0; x < gridSize.rows; x++) {
                 const cellEl = document.createElement('td')
-                cellEl.append(x + ',' + y);
+
+                if (googlePosition && googlePosition.x === x && googlePosition.y === y) {
+                    cellEl.append(document.createTextNode('Google'))
+                }
+
                 rowEl.append(cellEl)
             }
             gridEl.append(rowEl)
@@ -41,7 +48,7 @@ export class View {
         this.#rootEl.append(this.renderStatus(viewModel.status))
 
         if (viewModel.status === GAME_STATUSES.IN_PROGRESS) {
-            this.#rootEl.append(this.#gridView.render(viewModel.settings))
+            this.#rootEl.append(this.#gridView.render(viewModel))
         }
     }
 
