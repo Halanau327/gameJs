@@ -5,6 +5,7 @@ export class Google {
     #numberUtil
     #settings
 
+
     constructor(numberUtil, settings) {
         if (!numberUtil || typeof numberUtil.getRandomNumber !== 'function') {
             throw new Error('Invalid numberUtil');
@@ -33,9 +34,8 @@ export class Google {
             // Проверка на совпадение с текущей позицией Google и позициями игроков
             isEqual = newPosition.isEqual(this.#position) || newPosition.isEqual(player1Position) || newPosition.isEqual(player2Position)
         }
-
         this.#position = newPosition;
-        // console.log('Google jumped to:', this.#position.x, this.#position.y);
+
     }
 
     get position() {

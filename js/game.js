@@ -12,16 +12,28 @@ export class Game {
     #player2
     #player1Score = 0;
     #player2Score = 0;
+    #eventEmitter
+
+
 
     // dependency injection
-    constructor(numberUtil) {
+    constructor(numberUtil, eventEmitter) {
         this.#state = GAME_STATUSES.PENDING;
         this.#numberUtil = numberUtil
         this.#settings = DEFAULT_SETTINGS;
+        this.#eventEmitter = eventEmitter
+    }
+
+    async subscribe(callback) {
+        this.#eventEmitter.on(callback)
     }
 
     async getGooglePosition() {
-        return this.#google ? this.#google.position : undefined;    }
+        if (!this.#google) {
+            this.#google = new Google(this.#numberUtil, this.#settings);
+        }
+        return this.#google.position;
+    }
 
     async getPlayer1Position() {
         return this.#player1.position
@@ -113,7 +125,8 @@ export class Game {
         const player2Position = await this.getPlayer2Position();
         setInterval(async () => {
             await this.#google.jump(player1Position, player2Position);
-        }, this.#settings.jumpInterval);
+            this.#eventEmitter.emit()
+        }, DEFAULT_SETTINGS.jumpInterval);
     }
 
     async getStatus() {
@@ -136,6 +149,10 @@ export class Game {
         this.#player1 = new Player(this.#numberUtil, this.#settings, 1)
         this.#player2 = new Player(this.#numberUtil, this.#settings, 2)
         this.#google = new Google(this.#numberUtil, this.#settings)
+        // await this.getGooglePosition();
+        // await this.getPlayer1Position();
+        // await this.getPlayer2Position();
+
         await this.#runGoogleJumpInterval()
     }
 

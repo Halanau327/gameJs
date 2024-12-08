@@ -7,27 +7,27 @@ export class Controller {
     constructor(view, model) {
         this.#view = view
         this.#model = model
-
         this.#view.controller = this
+
+        this.#model.subscribe(() => {
+            this.#view.render()
+        })
     }
 
-    async getViewModel() {
+    async getViewModel() { /* (3) */
         const status = await this.#model.getStatus()
         const settings = await this.#model.getSettings()
         const googlePosition = await this.#model.getGooglePosition()
 
-        let viewModel = {
+        return {
             status,
             settings,
-            googlePosition: {...googlePosition}
+            googlePosition
         }
-
-        return viewModel
     }
 
     async init() {
-        // const viewModel = await this.getViewModel()
-        await this.#view.render()
+        await this.#view.render() /* (2) */
     }
 
     async startGame() {

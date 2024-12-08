@@ -1,29 +1,5 @@
 import {GAME_STATUSES} from "../game.js";
-
-export class GridView {
-    render(viewModel) {
-        const gridSize = viewModel.settings.gridSize
-        const googlePosition = viewModel.googlePosition
-
-        const gridEl = document.createElement('table')
-
-        for (let y = 0; y < gridSize.columns; y++) {
-            const rowEl = document.createElement('tr')
-            for (let x = 0; x < gridSize.rows; x++) {
-                const cellEl = document.createElement('td')
-
-                if (googlePosition && googlePosition.x === x && googlePosition.y === y) {
-                    cellEl.append(document.createTextNode('Google'))
-                }
-
-                rowEl.append(cellEl)
-            }
-            gridEl.append(rowEl)
-        }
-
-        return gridEl
-    }
-}
+import {GridView} from "../gridView.js";
 
 export class View {
     #rootEl
@@ -33,7 +9,8 @@ export class View {
     constructor(rootId) {
         this.#rootEl = document.getElementById(rootId)
         // GRASP / Information Expert, Creator
-        this.#gridView = new GridView()
+        const tableElement = document.querySelector('.table')
+        this.#gridView = new GridView(tableElement)
     }
 
     set controller (controller) {
@@ -45,7 +22,7 @@ export class View {
 
         this.#rootEl.innerHTML = ''
         this.#rootEl.append(this.renderStartButton())
-        this.#rootEl.append(this.renderStatus(viewModel.status))
+        // this.#rootEl.append(this.renderStatus(viewModel.status))
 
         if (viewModel.status === GAME_STATUSES.IN_PROGRESS) {
             this.#rootEl.append(this.#gridView.render(viewModel))
@@ -54,7 +31,7 @@ export class View {
 
     renderStartButton() {
         const button = document.createElement('button')
-        button.append('Start')
+        button.classList.add('.main-button')
 
         button.addEventListener('click', async () => {
             await this.#controller.startGame()
@@ -63,15 +40,11 @@ export class View {
         return button
     }
 
-    renderStatus(status) {
-        const statusEl = document.createElement('div')
-        statusEl.append('Status: ' + status)
-        return statusEl
-    }
-
-    renderGrid(gridSize) {
-
-    }
+    // renderStatus(status) {
+    //     const statusEl = document.createElement('div')
+    //     statusEl.append('Status: ' + status)
+    //     return statusEl
+    // }
 }
 
 

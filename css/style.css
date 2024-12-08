@@ -114,7 +114,7 @@ select {
 /* Result //======================================================================================================================================================== */
 
 .result-container {
-    display: flex;
+    display: none;
     justify-content: space-between;
     padding: 12px 36px;
     border-radius: 30px;
@@ -148,9 +148,13 @@ select {
     border-collapse: separate;
     border-spacing: 12px 6px;
     table-layout:fixed;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
+}
+
+.table.visible {
+    display: flex;
 }
 
 /* Modal //======================================================================================================================================================== */
@@ -160,6 +164,7 @@ select {
     position: relative;
     max-width: 280px;
     max-height: 550px;
+    display: none;
 }
 
 .modal-elements {

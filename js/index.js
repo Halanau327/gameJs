@@ -3,17 +3,17 @@ import {View} from "./ui/view.js";
 import {Controller} from "./ui/controller.js";
 import {Game} from "./game.js";
 import {NumberMagicUtil} from "./number-magic-util.js";
+import {GameEventEmitter} from "./GameEventEmitter.js";
 
-// const model = new Counter()
-
+const eventEmitter = new GameEventEmitter()
 const numberUtil = new NumberMagicUtil()
 
-const game = new Game(numberUtil)
+const game = new Game(numberUtil, eventEmitter)
 
 await game.setSettings({
     gridSize: {
-        rows: 2,
-        columns: 2
+        rows: 5,
+        columns: 5
     }
 })
 
@@ -23,4 +23,5 @@ const view = new View("app")
 const controller = new Controller(view, game)
 
 
-controller.init()
+
+controller.init() /* (1) точка входа */

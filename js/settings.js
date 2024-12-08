@@ -5,7 +5,7 @@ export const DEFAULT_SETTINGS = {
     },
     pointsToWin: 10,
     pointsToLose: 10,
-    jumpInterval: 100
+    jumpInterval: 1000
 };
 
 export const GRID_SIZES = [
