@@ -14,8 +14,6 @@ export class Game {
     #player2Score = 0;
     #eventEmitter
 
-
-
     // dependency injection
     constructor(numberUtil, eventEmitter) {
         this.#state = GAME_STATUSES.PENDING;
@@ -36,11 +34,11 @@ export class Game {
     }
 
     async getPlayer1Position() {
-        return this.#player1.position
+        return this.#player1 ? this.#player1.position : null;
     }
 
     async getPlayer2Position() {
-        return this.#player2.position;
+        return this.#player2 ? this.#player2.position : null;
     }
 
     async movePlayer1(direction) {
@@ -138,6 +136,25 @@ export class Game {
     }
 
     async setSettings(settings) {
+        // // Проверка, что настройки переданы и являются объектом
+        // if (!settings || typeof settings !== 'object') {
+        //     throw new Error('Invalid settings: settings object is missing or not an object');
+        // }
+        //
+        // // Проверка, что gridSize передан и является объектом
+        // if (!settings.gridSize || typeof settings.gridSize !== 'object') {
+        //     throw new Error('Invalid settings: gridSize is missing or not an object');
+        // }
+        //
+        // // Проверка, что gridSize.columns и gridSize.rows являются числами
+        // if (typeof settings.gridSize.columns !== 'number' || typeof settings.gridSize.rows !== 'number') {
+        //     throw new Error('Invalid settings: gridSize.columns or gridSize.rows is not a number');
+        // }
+
+
+
+
+
         if (settings.gridSize.rows * settings.gridSize.columns < 4) {
             throw new Error('Grid size must be at least 4x4')
         }

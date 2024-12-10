@@ -13,9 +13,9 @@ export class GameEventEmitter {
         this.#listeners.push(callback)
     }
 
-    emit(data = null) {
+    emit() {
         if (this.#listeners) {
-            this.#listeners.forEach(callback => callback(data))
+            this.#listeners.forEach(callback => callback())
         }
     }
 }

@@ -60,6 +60,25 @@ select {
 .main-button {
     align-self: center;
     margin-top: 288px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #FFF;
+    background: linear-gradient(90deg, #4AA32F 0%, #66DC42 100%);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(102, 220, 66, 0.5);
+}
+
+.main-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(102, 220, 66, 0.5);
 }
 
 .toggle {
@@ -126,6 +145,11 @@ select {
     column-gap: 30px;
 }
 
+.result-container.visible {
+    display: flex;
+}
+
+
 .result-block {
     display: inline-flex;
     gap: 24px;
@@ -151,6 +175,7 @@ select {
     display: none;
     align-items: center;
     justify-content: center;
+    border: 1px solid ;
 }
 
 .table.visible {

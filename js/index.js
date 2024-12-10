@@ -17,11 +17,8 @@ await game.setSettings({
     }
 })
 
-
-const view = new View("app")
+const view = new View('#app')
 
 const controller = new Controller(view, game)
-
-
 
 controller.init() /* (1) точка входа */
