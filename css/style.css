@@ -169,13 +169,13 @@ select {
 /* Table //======================================================================================================================================================== */
 
 .table {
+    margin-top: 30px;
     border-collapse: separate;
     border-spacing: 12px 6px;
-    table-layout:fixed;
+    table-layout: fixed;
     display: none;
     align-items: center;
     justify-content: center;
-    border: 1px solid ;
 }
 
 .table.visible {

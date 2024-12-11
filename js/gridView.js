@@ -24,27 +24,26 @@ export class GridView {
 
                 cellEl.innerHTML = '';
 
-                if (googlePosition.x === x && googlePosition.y === y) {
-                    const imgEl = document.createElement('img');
-                    imgEl.src = 'img/icons/googleIcon.svg';
-                    imgEl.alt = 'googleIcon';
-                    cellEl.appendChild(imgEl);
-                } else if (player1Position.x === x && player1Position.y === y) {
-                    const imgEl = document.createElement('img');
-                    imgEl.src = 'img/icons/man01.svg';
-                    imgEl.alt = 'man';
-                    cellEl.appendChild(imgEl);
-                } else if (player2Position.x === x && player2Position.y === y) {
-                    const imgEl = document.createElement('img');
-                    imgEl.src = 'img/icons/man02.svg';
-                    imgEl.alt = 'man';
-                    cellEl.appendChild(imgEl);
+                if (googlePosition && googlePosition.x === x && googlePosition.y === y) {
+                    const googleImg = document.createElement('img');
+                    googleImg.src = 'img/icons/googleIcon.svg';
+                    googleImg.alt = 'googleIcon';
+                    cellEl.appendChild(googleImg);
+                } else if (player1Position && player1Position.x === x && player1Position.y === y) {
+                    const player1Img = document.createElement('img');
+                    player1Img.src = 'img/icons/man01.svg';
+                    player1Img.alt = 'man';
+                    cellEl.appendChild(player1Img);
+                } else if (player2Position && player2Position.x === x && player2Position.y === y) {
+                    const player2Img = document.createElement('img');
+                    player2Img.src = 'img/icons/man02.svg';
+                    player2Img.alt = 'man';
+                    cellEl.appendChild(player2Img);
                 }
             }
         }
     }
 }
-
 
 
         // this.tableEl.innerHTML = ''

@@ -119,9 +119,9 @@ export class Game {
     }
 
     async #runGoogleJumpInterval() {
-        const player1Position = await this.getPlayer1Position();
-        const player2Position = await this.getPlayer2Position();
         setInterval(async () => {
+            const player1Position = await this.getPlayer1Position();
+            const player2Position = await this.getPlayer2Position();
             await this.#google.jump(player1Position, player2Position);
             this.#eventEmitter.emit()
         }, DEFAULT_SETTINGS.jumpInterval);
@@ -136,25 +136,6 @@ export class Game {
     }
 
     async setSettings(settings) {
-        // // Проверка, что настройки переданы и являются объектом
-        // if (!settings || typeof settings !== 'object') {
-        //     throw new Error('Invalid settings: settings object is missing or not an object');
-        // }
-        //
-        // // Проверка, что gridSize передан и является объектом
-        // if (!settings.gridSize || typeof settings.gridSize !== 'object') {
-        //     throw new Error('Invalid settings: gridSize is missing or not an object');
-        // }
-        //
-        // // Проверка, что gridSize.columns и gridSize.rows являются числами
-        // if (typeof settings.gridSize.columns !== 'number' || typeof settings.gridSize.rows !== 'number') {
-        //     throw new Error('Invalid settings: gridSize.columns or gridSize.rows is not a number');
-        // }
-
-
-
-
-
         if (settings.gridSize.rows * settings.gridSize.columns < 4) {
             throw new Error('Grid size must be at least 4x4')
         }
@@ -166,9 +147,7 @@ export class Game {
         this.#player1 = new Player(this.#numberUtil, this.#settings, 1)
         this.#player2 = new Player(this.#numberUtil, this.#settings, 2)
         this.#google = new Google(this.#numberUtil, this.#settings)
-        // await this.getGooglePosition();
-        // await this.getPlayer1Position();
-        // await this.getPlayer2Position();
+
 
         await this.#runGoogleJumpInterval()
     }

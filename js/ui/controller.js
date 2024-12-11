@@ -1,3 +1,5 @@
+import {MOVE_DIRECTIONS} from "../game.js";
+
 export class Controller {
     #view;
     #game;
@@ -10,13 +12,16 @@ export class Controller {
         this.#view.onPlayAgain(this.handlePlayAgain.bind(this));
 
         this.#game.subscribe(this.updateView.bind(this));
+
+        // Добавляем обработчик событий клавиатуры
+        document.addEventListener('keydown', this.handleKeyDown.bind(this));
     }
 
     async handleStartGame(settings) {
         await this.#game.setSettings(settings);
-        await this.#game.start();
+        await this.#game.start(); // Инициализация игроков и Google
         this.#view.showGrid(); // Показываем сетку после старта игры
-        await this.updateView();
+        await this.updateView(); // Обновляем представление
     }
 
     async handlePlayAgain() {
@@ -37,8 +42,8 @@ export class Controller {
 
         const viewModel = {
             googlePosition,
-            player1Position: player1Position || { x: -1, y: -1 },
-            player2Position: player2Position || { x: -1, y: -1 },
+            player1Position: player1Position,
+            player2Position: player2Position,
             settings
         };
 
@@ -53,7 +58,41 @@ export class Controller {
     }
 
     async init() {
-         await this.updateView();
+        await this.updateView();
+    }
+
+    async handleKeyDown(event) {
+        const key = event.key;
+
+        switch (key) {
+            case 'ArrowUp':
+                await this.#game.movePlayer1(MOVE_DIRECTIONS.UP);
+                break;
+            case 'ArrowDown':
+                await this.#game.movePlayer1(MOVE_DIRECTIONS.DOWN);
+                break;
+            case 'ArrowLeft':
+                await this.#game.movePlayer1(MOVE_DIRECTIONS.LEFT);
+                break;
+            case 'ArrowRight':
+                await this.#game.movePlayer1(MOVE_DIRECTIONS.RIGHT);
+                break;
+            case 'w':
+                await this.#game.movePlayer2(MOVE_DIRECTIONS.UP);
+                break;
+            case 's':
+                await this.#game.movePlayer2(MOVE_DIRECTIONS.DOWN);
+                break;
+            case 'a':
+                await this.#game.movePlayer2(MOVE_DIRECTIONS.LEFT);
+                break;
+            case 'd':
+                await this.#game.movePlayer2(MOVE_DIRECTIONS.RIGHT);
+                break;
+            default:
+                break;
+        }
+        await this.updateView();
     }
 }
 

@@ -7,15 +7,13 @@ export class Google {
 
 
     constructor(numberUtil, settings) {
-
         if (!numberUtil || typeof numberUtil.getRandomNumber !== 'function') {
             throw new Error('Invalid numberUtil');
         }
+
         if (!settings || !settings.gridSize || !settings.gridSize.columns|| !settings.gridSize.rows) {
             throw new Error('Invalid settings');
-
         }
-
 
         this.#numberUtil = numberUtil;
         this.#settings = settings

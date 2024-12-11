@@ -41,11 +41,7 @@ export class View {
 
     bindEvents() {
         this.#startButton.addEventListener('click', () => {
-
-
             const gridSize = this.#settings.gridSize.value.split('x').map(Number);
-
-            console.log('Grid size array:', gridSize); // Отладочный выво
 
             const pointsToWin = parseInt(this.#settings.pointsToWin.value, 10);
             const pointsToLose = parseInt(this.#settings.pointsToLose.value, 10);
@@ -94,7 +90,7 @@ export class View {
         this.#modalText.textContent = text;
         this.#modalResultCatch.textContent = catchCount;
         this.#modalResultMiss.textContent = missCount;
-        this.#modal.style.display = 'block';
+        this.#modal.style.display = 'flex';
     }
 
     hideModal() {
